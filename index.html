@@ -3,23 +3,30 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>아름다운 것들 가락 듣기</title>
+<title>악보 마스터</title>
 <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <header class="top">
-  <h1 id="title"></h1>
-  <button type="button" id="readBtn" class="read">악보 가져오기</button>
-  <input type="file" id="pick" accept="image/*" hidden>
-  <button type="button" id="tgIo" class="out" aria-pressed="false" aria-controls="io">내보내기</button>
-  <div id="pipes" class="pipes"></div>
-  <div class="view">
-    <button type="button" id="tgSyl" aria-pressed="true">계이름</button>
-    <button type="button" id="tgSrc" class="eonly" aria-pressed="false" aria-controls="srcImg" hidden>원본</button>
-    <div class="seg" role="group" aria-label="듣기와 고치기">
-      <button type="button" id="mListen" aria-pressed="true">듣기</button>
-      <button type="button" id="mEdit" aria-pressed="false">고치기</button>
+  <div class="masthead">
+    <div class="brand"><span class="brand-mark" aria-hidden="true">♫</span>악보 마스터</div>
+    <div class="file-actions">
+      <button type="button" id="readBtn" class="read">악보 가져오기</button>
+      <input type="file" id="pick" accept="image/*" hidden>
+      <button type="button" id="tgIo" class="out" aria-pressed="false" aria-controls="io">내보내기</button>
+    </div>
+  </div>
+  <div class="workspace">
+    <h1 id="title"></h1>
+    <div id="pipes" class="pipes"></div>
+    <div class="view">
+      <button type="button" id="tgSyl" aria-pressed="true">계이름</button>
+      <button type="button" id="tgSrc" class="eonly" aria-pressed="false" aria-controls="srcImg" hidden>원본</button>
+      <div class="seg" role="group" aria-label="듣기와 고치기">
+        <button type="button" id="mListen" aria-pressed="true">듣기</button>
+        <button type="button" id="mEdit" aria-pressed="false">고치기</button>
+      </div>
     </div>
   </div>
 </header>
