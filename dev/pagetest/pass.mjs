@@ -1,0 +1,30 @@
+import { createRequire } from 'module';
+const require = createRequire(import.meta.url);
+const { chromium } = require('playwright');
+const browser = await chromium.launch({ ...(process.env.CHROME ? { executablePath: process.env.CHROME } : {}), args: ['--autoplay-policy=no-user-gesture-required'] });
+const page = await browser.newPage({ viewport: { width: 1100, height: 900 } });
+const errs = [];
+page.on('pageerror', e => errs.push(e.message));
+await page.goto(new URL('../../index.html', import.meta.url).href);
+await page.waitForTimeout(300);
+if (await page.locator('#io').isHidden()) await page.click('#tgIo'); await page.fill('#src', "제목 시험\n박자 4/4\n빠르기 240\n|: 도 레 미 파 | [1 솔 라 시 도' :| [2 솔 미 레 도 ||"); await page.click('#xApply'); await page.waitForTimeout(300); await page.click('#tgIo');
+const st = () => page.evaluate(() => ({ on: [...document.querySelectorAll('.nt.on')].map(e => e.dataset.n), mark: [...document.querySelectorAll('.nt.mark')].map(e => e.dataset.n), num: [...document.querySelectorAll('.markn')].map(e => e.textContent), btn: document.getElementById('play').textContent }));
+const tap = n => page.locator(`.nt[data-n="${n}"]`).click({ force: true });
+await tap(2); await page.waitForTimeout(150);
+console.log('미를 한 번 누름', JSON.stringify(await st()));
+await tap(2); await page.waitForTimeout(150);
+console.log('미를 다시 누름', JSON.stringify(await st()));
+await page.screenshot({ path: 'pass.png', clip: { x: 0, y: 60, width: 1100, height: 150 } });
+// 둘째 번에서 시작하면 2번 괄호(음 8~11)로 넘어가야 한다
+await page.click('#play');
+const seen = new Set();
+for (let i = 0; i < 20; i++) { await page.waitForTimeout(80); for (const n of (await st()).on) seen.add(+n); }
+console.log('둘째 번에서 재생해 지나간 음', JSON.stringify([...seen].sort((a, b) => a - b)));
+await page.waitForTimeout(600);
+console.log('끝난 뒤', JSON.stringify(await st()));
+await tap(2); await page.waitForTimeout(150);
+console.log('미를 또 누름(첫째 번으로)', JSON.stringify(await st()));
+await tap(9); await page.waitForTimeout(150);
+console.log('2번 괄호 안의 음', JSON.stringify(await st()));
+console.log('errors', JSON.stringify(errs));
+await browser.close();

@@ -1,0 +1,4 @@
+node_modules/
+dev/cases/
+dev/*.png
+dev/pagetest/*.png

@@ -1,0 +1,3 @@
+// 머리 높이(칸 단위) 추정값을 적는다: node hk.cjs 이미지...
+const { load } = require('./dbg.cjs'); const OMR = require('../omr.js');
+for (const f of process.argv.slice(2)) { const A = OMR.analyze(load(f)); console.log((A.headH || 0).toFixed(3), f.split('/').slice(-2).join('/')); }

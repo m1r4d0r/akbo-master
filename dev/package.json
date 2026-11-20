@@ -1,0 +1,10 @@
+{
+  "name": "akbo-master-dev",
+  "private": true,
+  "description": "악보 읽기 엔진의 시험 도구(시험 악보 생성·채점·페이지 시험)",
+  "dependencies": {
+    "playwright": "^1.48.0",
+    "pngjs": "^7.0.0",
+    "verovio": "^6.4.1"
+  }
+}

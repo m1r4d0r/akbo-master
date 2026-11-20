@@ -1,0 +1,12 @@
+import createVerovioModule from 'verovio/wasm';
+import { VerovioToolkit } from 'verovio/esm';
+import fs from 'fs';
+import os from 'os';
+const VerovioModule = await createVerovioModule();
+const tk = new VerovioToolkit(VerovioModule);
+const ok = tk.loadData(fs.readFileSync(process.argv[2], 'utf-8'));
+console.log('verovio가 읽음:', ok, '쪽 수', tk.getPageCount());
+const mei = tk.getMEI();
+const count = re => (mei.match(re) || []).length;
+console.log('마디', count(/<measure /g), '음표', count(/<note /g), '쉼표', count(/<rest /g), '붙임줄', count(/<tie /g), '이음줄', count(/<slur /g), '도돌이', (mei.match(/(left|right)="rpt(start|end)"/g) || []).join(' '), '괄호', count(/<ending /g));
+fs.writeFileSync(os.tmpdir() + '/vrv.svg', tk.renderToSVG(1));

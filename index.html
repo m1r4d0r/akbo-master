@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>아름다운 것들 가락 듣기</title>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="top">
+  <h1 id="title"></h1>
+  <button type="button" id="readBtn" class="read">악보 가져오기</button>
+  <input type="file" id="pick" accept="image/*" hidden>
+  <button type="button" id="tgIo" class="out" aria-pressed="false" aria-controls="io">내보내기</button>
+  <div id="pipes" class="pipes"></div>
+  <div class="view">
+    <button type="button" id="tgSyl" aria-pressed="true">계이름</button>
+    <button type="button" id="tgSrc" class="eonly" aria-pressed="false" aria-controls="srcImg" hidden>원본</button>
+    <div class="seg" role="group" aria-label="듣기와 고치기">
+      <button type="button" id="mListen" aria-pressed="true">듣기</button>
+      <button type="button" id="mEdit" aria-pressed="false">고치기</button>
+    </div>
+  </div>
+</header>
+
+<p id="msg" class="msg" role="status"></p>
+
+<section id="srcImg" class="srcimg eonly" hidden>
+  <img id="srcPic" alt="올린 악보 이미지">
+</section>
+
+<section id="io" class="io" hidden>
+  <div class="iorow">
+    <button type="button" id="xXml">MusicXML</button>
+    <button type="button" id="xMidi">MIDI</button>
+    <button type="button" id="xPrint">인쇄</button>
+    <span class="gapx"></span>
+    <button type="button" id="xCopy">글자 악보 복사</button>
+    <button type="button" id="xApply">아래 글자 악보로 바꾸기</button>
+    <button type="button" id="reset">예시 곡으로</button>
+  </div>
+  <textarea id="src" rows="5" spellcheck="false" autocomplete="off" aria-label="글자 악보"></textarea>
+</section>
+
+<main id="score" class="score"></main>
+
+<footer class="foot">
+<section id="sound" class="drawer" hidden>
+  <div class="grp">
+    <span class="lb">옥타브</span>
+    <button type="button" id="oDn" aria-label="한 옥타브 낮게">−</button>
+    <output id="oVal">+1</output>
+    <button type="button" id="oUp" aria-label="한 옥타브 높게">+</button>
+  </div>
+  <div class="grp">
+    <span class="lb">조옮김</span>
+    <button type="button" id="sDn" aria-label="반음 낮게">−</button>
+    <output id="sVal">0</output>
+    <button type="button" id="sUp" aria-label="반음 높게">+</button>
+  </div>
+  <div class="grp" id="parts" hidden></div>
+</section>
+<div class="bar" id="player">
+  <div class="grp">
+    <button type="button" id="play" class="primary">재생</button>
+    <button type="button" id="rew">처음으로</button>
+    <button type="button" id="loop" aria-pressed="false">되풀이</button>
+  </div>
+  <div class="grp">
+    <button type="button" id="tDn" aria-label="느리게">−</button>
+    <span class="lb">빠르기</span><output id="tVal">100</output>
+    <button type="button" id="tUp" aria-label="빠르게">+</button>
+  </div>
+  <div class="grp end">
+    <button type="button" id="tgSound" aria-pressed="false" aria-controls="sound">소리 설정</button>
+  </div>
+</div>
+<div class="bar tools" id="tools" hidden>
+  <div class="grp k-dur" id="durs">
+    <button type="button" data-dur="4" aria-pressed="false">온</button>
+    <button type="button" data-dur="2" aria-pressed="false">2분</button>
+    <button type="button" data-dur="1" aria-pressed="false">4분</button>
+    <button type="button" data-dur="0.5" aria-pressed="false">8분</button>
+    <button type="button" data-dur="0.25" aria-pressed="false">16분</button>
+    <button type="button" id="eDot" aria-pressed="false">점</button>
+  </div>
+  <div class="grp k-acc">
+    <button type="button" id="eSharp" aria-pressed="false" aria-label="반음 올림">♯</button>
+    <button type="button" id="eFlat" aria-pressed="false" aria-label="반음 내림">♭</button>
+  </div>
+  <div class="grp k-note">
+    <button type="button" id="eRest" aria-pressed="false">쉼표</button>
+    <button type="button" id="eTie" aria-pressed="false">줄</button>
+    <button type="button" id="eChord">겹음</button>
+    <button type="button" id="eAdd">추가</button>
+    <button type="button" id="eDel">지우기</button>
+    <button type="button" id="eBar">마디줄</button>
+  </div>
+  <div class="grp end">
+    <button type="button" class="undo">되돌리기</button>
+    <button type="button" id="ePlay" class="primary">들어보기</button>
+  </div>
+</div>
+<div class="bar tools" id="barTools" hidden>
+  <div class="grp k-bar">
+    <button type="button" id="bRepEnd" aria-pressed="false">도돌이 끝</button>
+    <button type="button" id="bRepStart" aria-pressed="false">도돌이 시작</button>
+    <button type="button" id="bV1" aria-pressed="false">1번 괄호</button>
+    <button type="button" id="bV2" aria-pressed="false">2번 괄호</button>
+    <button type="button" id="bDel">마디줄 지우기</button>
+  </div>
+  <div class="grp end"><button type="button" class="undo">되돌리기</button></div>
+</div>
+<div class="bar tools" id="timeTools" hidden>
+  <div class="grp k-bar" id="times">
+    <button type="button" data-ts="2/4" aria-pressed="false">2/4</button>
+    <button type="button" data-ts="3/4" aria-pressed="false">3/4</button>
+    <button type="button" data-ts="4/4" aria-pressed="false">4/4</button>
+    <button type="button" data-ts="6/8" aria-pressed="false">6/8</button>
+    <button type="button" data-ts="3/8" aria-pressed="false">3/8</button>
+    <button type="button" data-ts="2/2" aria-pressed="false">2/2</button>
+  </div>
+  <div class="grp end"><button type="button" class="undo">되돌리기</button></div>
+</div>
+<div class="bar tools" id="keyTools" hidden>
+  <div class="grp k-bar">
+    <button type="button" id="kDn" aria-label="내림표 쪽으로">♭ 쪽</button>
+    <output id="kVal">없음</output>
+    <button type="button" id="kUp" aria-label="올림표 쪽으로">♯ 쪽</button>
+  </div>
+  <div class="grp end"><button type="button" class="undo">되돌리기</button></div>
+</div>
+</footer>
+<script src="omr.js"></script>
+<script src="export.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
